@@ -18,4 +18,13 @@ export default defineNuxtConfig({
     middleware: 'src/middleware',
   },
   components: ['src/shared'],
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: '@import "~/app/assets/styles/main.scss"; ',
+        },
+      },
+    },
+  },
 });
