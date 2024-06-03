@@ -1,9 +1,4 @@
+@import './variables';
 @import './global';
 @import './function';
-@import './variables';
-*{
-  font-family: "Rubik", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 500;
-  font-style: normal;
-}
+@import './mixins/main.scss';

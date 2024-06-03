@@ -2,7 +2,7 @@
     <div>
 Это главная страница
 <UiButton :theme="theme" :click-handler="changeTheme">
-    Нажми меня
+   <UiIconsCart color="#d3d3d3"/> Нажми меня
 </UiButton>
     </div>
 </template>
@@ -11,7 +11,7 @@
 const theme=ref('light')
 
 const changeTheme=function(){
-    console.log(1)
+    
     if(theme.value==='black'){
         theme.value='light'
     }else{

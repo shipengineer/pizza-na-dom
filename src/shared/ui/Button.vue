@@ -31,6 +31,9 @@ const props=defineProps({
   &-black{
     color:$dark-brand;
   }
+  &-transparent{
+    
+  }
 
 }
 
