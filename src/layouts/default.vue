@@ -1,7 +1,7 @@
 <template>
     <div class="main-layout">
-       <p>Здесь начинается подложка хедера</p> 
-       <p>Здесь заканчивается подложка хедера</p> 
+       <p>Здесь начинается подложка хедера</p>
+       <p>Здесь заканчивается подложка хедера</p>
         <slot></slot>
         <p>
             Здесь начинается подложка футера
@@ -17,5 +17,5 @@
 </script>
 
 <style lang="scss" scoped>
-@import '~/app/assets/styles/main.scss'
+@use '~/app/assets/styles/main.scss'
 </style>

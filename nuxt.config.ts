@@ -17,12 +17,14 @@ export default defineNuxtConfig({
     layouts: 'src/layouts',
     middleware: 'src/middleware',
   },
+  css:['~/app/assets/styles/reset.css'],
   components: ['src/shared'],
   vite: {
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: '@import "~/app/assets/styles/main.scss"; ',
+
+          additionalData: '@use "~/app/assets/styles/main.scss" as *; ',
         },
       },
     },
