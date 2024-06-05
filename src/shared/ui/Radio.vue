@@ -1,30 +1,45 @@
-<template>
-    <div class="radio-container">
-        <UiButton v-for="button,index in buttons" :key="button.value" @click="clickHandler(button.value)" class="square">
-        {{ button.title }}</UiButton>
-    </div>
-</template>
-
 <script setup lang="ts">
-const props=defineProps({
-    buttons:{
-        type:Array,
-        default:[]
+/* TODO: переместить интерфейс в соотв. папку (куда?) */
+interface Size{
+  title: string,
+  value: number,
+  isSelected: boolean
+}
+
+defineProps({
+    sizes:{
+      type:Array<Size>,
+      default:[],
+      required: true
     } 
 })
-const color:globalThis.Ref<string>=ref('red')
-    console.log(color)
-    
-const emits= defineEmits(['change'])
-const clickHandler=function(newValue:string){
-    emits('change',newValue)
+
+const emits=defineEmits(['changePizzaSize'])
+const handleClickOnSize = (newSize: number) => {
+  emits('changePizzaSize', newSize)
+  // TODO: перевешивать isSelected на кликнутый размер и снимать со всех остальных.
 }
-interface Button{
-    title:string,
-    value:number| string,
-}
+
 </script>
 
-<style scoped>
+<template>
+  <div class="radio-container">
+    <!-- ВОПРОС: оставить хендлер через пропсы или сделать нативно через @click?-->
+    <UiCustomButton
+        v-for="size in sizes"
+        styleClass="size-picker"
+        :class="{ selected: size.isSelected }"
+        :click-handler="() => handleClickOnSize(size.value)"
+        :key="size.value">
+      {{ size.title }}
+    </UiCustomButton>
+  </div>
+</template>
 
+
+<style scoped>
+  .radio-container {
+    display: flex;
+    gap: 10px
+  }
 </style>

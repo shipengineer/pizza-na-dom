@@ -1,5 +1,11 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  modules: [
+    ['@pinia/nuxt', { autoImports: ['defineStore', 'storeToRefs'] }],
+  ],
+  imports: {
+    dirs: ['./app/stores/**']
+  },
   app: {
     head: {
       charset: 'utf-8',

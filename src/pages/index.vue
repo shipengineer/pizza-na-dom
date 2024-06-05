@@ -1,24 +1,35 @@
 <template>
-    <div>
-Это главная страница
-<UiButton :theme="theme" :click-handler="changeTheme">
-   <UiIconsCart color="#d3d3d3"/> Нажми меня
-</UiButton>
-    </div>
+  <div>
+    Это главная страница
+    <UiRadio @change-pizza-size="changeSize" :sizes=sizes></UiRadio>
+  </div>
 </template>
 
 <script setup lang="ts">
-const theme=ref('light')
+  const changeSize = function (size: number) {
+    console.log(size)
+  };
+  const sizes = [
+    {
+      title: "25",
+      value: 25,
+      isSelected: true
+    },
+    {
+      title: "30",
+      value: 30,
+      isSelected: false
+    },
+    {
+      title: "35",
+      value: 35,
+      isSelected: false
+    },
+  ]
 
-const changeTheme=function(){
-    
-    if(theme.value==='black'){
-        theme.value='light'
-    }else{
-        theme.value='black'
-    }
-}
+
 </script>
+
 
 <style scoped>
 
