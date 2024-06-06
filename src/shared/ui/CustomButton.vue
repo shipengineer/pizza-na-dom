@@ -101,10 +101,9 @@ defineProps({
   color: black;
   padding: 2px;
   transition: .9s;
-}
 
-// TODO: selected должен быть ассоциирован с size-picker!
-.selected {
-  border: 5px solid #fcc900;
+  &__selected {
+    border: 5px solid #fcc900;
+  }
 }
 </style>

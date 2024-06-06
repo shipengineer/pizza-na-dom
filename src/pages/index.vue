@@ -1,14 +1,16 @@
 <template>
   <div>
     Это главная страница
-    <UiRadio @change-pizza-size="changeSize" :checkboxes=sizes></UiRadio>
+    <UiCustomButton :click-handler="showSize" style-class="selector">Current Size</UiCustomButton>
+    <UiRadio v-model="currentPizzaSize" :checkboxes=sizes></UiRadio>
+    currentPizzaSize: {{ currentPizzaSize }}
   </div>
 </template>
 
 <script setup lang="ts">
-  const changeSize = function (size: number) {
-    console.log(size)
-  };
+  const currentPizzaSize = ref(25);
+  const showSize = () => {console.log(currentPizzaSize.value)}
+
   const sizes = [
     {
       title: "25",

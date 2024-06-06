@@ -1,7 +1,6 @@
 <script setup lang="ts">
 /**
-  Creates a set of checkboxes of the following size what can be styled by changing
-  style in UiCustomButton component.
+  Creates a set of checkboxes of the following size what can be styled by changing style in UiCustomButton component.
   @property checkboxes - Array<Checkbox> - array of objects what represents checkboxes.
  */
 
@@ -13,18 +12,19 @@ interface Checkbox{
 }
 
 const props = defineProps({
-    checkboxes:{
+    checkboxes: {
       type:Array<Checkbox>,
       default:[],
       required: true
-    } 
+    },
+    modelValue: {
+      type: Number,
+    }
 })
 
-const refChecks = ref(props.checkboxes)
+const refChecks = ref(props.checkboxes);
 
-const emits=defineEmits(['changePizzaSize'])
 const handleClickOnSize = (checkbox: Checkbox) => {
-  emits('changePizzaSize', checkbox);
   props.checkboxes.forEach((checkbox) => checkbox.isSelected = false);
   checkbox.isSelected = true;
 }
@@ -33,14 +33,19 @@ const handleClickOnSize = (checkbox: Checkbox) => {
 
 <template>
   <div class="radio-container">
-    <!-- ВОПРОС: оставить хендлер через пропсы или сделать нативно через @click?-->
     <UiCustomButton
         v-for="checkbox in refChecks"
         styleClass="size-picker"
-        :class="{ selected: checkbox.isSelected }"
-        :click-handler="() => handleClickOnSize(checkbox)"
-        :key="checkbox.value">
-      {{ checkbox.title }}
+        :class="{ 'size-picker__selected': checkbox.isSelected }"
+        :key="checkbox.value"
+        :click-handler="() => handleClickOnSize(checkbox)">
+      <input
+          type="radio"
+          :value="checkbox.value"
+          :id="checkbox.title"
+          @click="$emit('update:modelValue', $event.target.value)"
+      >
+      <label :for="checkbox.title">{{checkbox.title}}</label>
     </UiCustomButton>
   </div>
 </template>
