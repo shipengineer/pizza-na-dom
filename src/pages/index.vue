@@ -1,7 +1,7 @@
 <template>
   <div>
     Это главная страница
-    <UiRadio @change-pizza-size="changeSize" :sizes=sizes></UiRadio>
+    <UiRadio @change-pizza-size="changeSize" :checkboxes=sizes></UiRadio>
   </div>
 </template>
 

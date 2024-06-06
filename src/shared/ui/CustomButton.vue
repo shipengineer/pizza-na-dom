@@ -100,7 +100,7 @@ defineProps({
   border: 5px solid gray;
   color: black;
   padding: 2px;
-  transition: .2s;
+  transition: .9s;
 }
 
 // TODO: selected должен быть ассоциирован с size-picker!

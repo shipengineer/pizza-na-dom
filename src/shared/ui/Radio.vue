@@ -1,23 +1,32 @@
 <script setup lang="ts">
+/**
+  Creates a set of checkboxes of the following size what can be styled by changing
+  style in UiCustomButton component.
+  @property checkboxes - Array<Checkbox> - array of objects what represents checkboxes.
+ */
+
 /* TODO: переместить интерфейс в соотв. папку (куда?) */
-interface Size{
+interface Checkbox{
   title: string,
   value: number,
   isSelected: boolean
 }
 
-defineProps({
-    sizes:{
-      type:Array<Size>,
+const props = defineProps({
+    checkboxes:{
+      type:Array<Checkbox>,
       default:[],
       required: true
     } 
 })
 
+const refChecks = ref(props.checkboxes)
+
 const emits=defineEmits(['changePizzaSize'])
-const handleClickOnSize = (newSize: number) => {
-  emits('changePizzaSize', newSize)
-  // TODO: перевешивать isSelected на кликнутый размер и снимать со всех остальных.
+const handleClickOnSize = (checkbox: Checkbox) => {
+  emits('changePizzaSize', checkbox);
+  props.checkboxes.forEach((checkbox) => checkbox.isSelected = false);
+  checkbox.isSelected = true;
 }
 
 </script>
@@ -26,12 +35,12 @@ const handleClickOnSize = (newSize: number) => {
   <div class="radio-container">
     <!-- ВОПРОС: оставить хендлер через пропсы или сделать нативно через @click?-->
     <UiCustomButton
-        v-for="size in sizes"
+        v-for="checkbox in refChecks"
         styleClass="size-picker"
-        :class="{ selected: size.isSelected }"
-        :click-handler="() => handleClickOnSize(size.value)"
-        :key="size.value">
-      {{ size.title }}
+        :class="{ selected: checkbox.isSelected }"
+        :click-handler="() => handleClickOnSize(checkbox)"
+        :key="checkbox.value">
+      {{ checkbox.title }}
     </UiCustomButton>
   </div>
 </template>
