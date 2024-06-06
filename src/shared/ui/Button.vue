@@ -1,5 +1,5 @@
 <template>
- <button class="btn" :class="`btn-${props.theme} btn--${props.form}`" @click="props.clickHandler">
+ <button class="btn" :class="`btn-${props.theme} btn--${props.form}`" >
    <slot/>
  </button>
 </template>
@@ -13,10 +13,6 @@ const props=defineProps({
   form:{
     type:String,
     default:'rectangle'
-  },
-  clickHandler:{
-    type:Function,
-    default:()=>{}
   }
 })
 </script>

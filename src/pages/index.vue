@@ -1,25 +1,35 @@
 <template>
     <div>
-Это главная страница
-<UiButton :theme="theme" :click-handler="changeTheme">
-   <UiIconsCart color="#d3d3d3"/> Нажми меня
-</UiButton>
+        <RadioButtons :buttons="sizes" v-model="result" theme="" class="radio"/>
+        <p style="color: red;">{{ result }}</p>
     </div>
 </template>
 
 <script setup lang="ts">
-const theme=ref('light')
-
-const changeTheme=function(){
-    
-    if(theme.value==='black'){
-        theme.value='light'
-    }else{
-        theme.value='black'
+const result=ref(10)
+import RadioButtons from '../widgets/radio-buttons/RadioButtons.vue';
+const sizes=[
+    {name:'Оплата картой',
+        value:'CARD'
+    },
+    {name:'Оплата наличкой',
+        value:"CASH"
+    },
+    {name:'35',
+        value:35
+    },
+    {name:'40',
+        value:40
     }
-}
+]
+
+
+  
 </script>
 
 <style scoped>
-
+.radio{
+    display: flex;
+    flex-direction: column;
+}
 </style>
