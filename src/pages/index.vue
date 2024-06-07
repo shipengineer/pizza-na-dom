@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-  const currentPizzaSize = ref(25);
+  const currentPizzaSize = ref(30);
 
   const sizes = [
     {
@@ -23,11 +23,7 @@
       value: 35,
     },
   ]
-
-
 </script>
 
-
 <style scoped>
-
 </style>

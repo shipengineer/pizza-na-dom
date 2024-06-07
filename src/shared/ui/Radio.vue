@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
-  Creates a set of checkboxes of the following size.
+  Creates a two-way bound set of checkboxes of the following size.
   @property checkboxes - Array<Checkbox> - array of objects what represents checkboxes.
  */
 
