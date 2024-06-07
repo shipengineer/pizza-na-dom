@@ -11,7 +11,7 @@ interface Checkbox{
   isSelected: boolean
 }
 
-const props = defineProps({
+defineProps({
     checkboxes: {
       type:Array<Checkbox>,
       default:[],
@@ -19,14 +19,7 @@ const props = defineProps({
     },
 })
 
-const model = defineModel();
-let currentValue = props.checkboxes[0].value;
-
-const handleClick = (newValue: number | string) => {
-  model.value = newValue;
-  currentValue = newValue;
-}
-
+defineModel();
 </script>
 
 <template>
@@ -34,8 +27,8 @@ const handleClick = (newValue: number | string) => {
     <UiCustomButton
         v-for="checkbox in checkboxes"
         :key="checkbox.value"
-        :class="{ active: checkbox.value==currentValue}"
-        @click="handleClick(checkbox.value)">
+        :class="{ active: checkbox.value==modelValue}"
+        @click="$emit('update:modelValue', checkbox.value)">
       {{ checkbox.title }}
     </UiCustomButton>
   </div>
