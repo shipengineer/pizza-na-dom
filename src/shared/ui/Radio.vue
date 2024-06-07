@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
-  Creates a set of checkboxes of the following size what can be styled by changing style in UiCustomButton component.
+  Creates a set of checkboxes of the following size.
   @property checkboxes - Array<Checkbox> - array of objects what represents checkboxes.
  */
 
