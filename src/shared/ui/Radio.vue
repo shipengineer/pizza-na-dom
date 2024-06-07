@@ -7,7 +7,7 @@
 /* TODO: переместить интерфейс в соотв. папку (куда?) */
 interface Checkbox{
   title: string,
-  value: number,
+  value: number | string,
   isSelected: boolean
 }
 
@@ -22,11 +22,12 @@ const props = defineProps({
     }
 })
 
-const refChecks = ref(props.checkboxes);
+const emits = defineEmits(["update:modelValue"])
+let currentValue = props.checkboxes[0].value;
 
-const handleClickOnSize = (checkbox: Checkbox) => {
-  props.checkboxes.forEach((checkbox) => checkbox.isSelected = false);
-  checkbox.isSelected = true;
+const handleClick = (newValue: number | string) => {
+  emits("update:modelValue", newValue);
+  currentValue = newValue;
 }
 
 </script>
@@ -34,18 +35,11 @@ const handleClickOnSize = (checkbox: Checkbox) => {
 <template>
   <div class="radio-container">
     <UiCustomButton
-        v-for="checkbox in refChecks"
-        styleClass="size-picker"
-        :class="{ 'size-picker__selected': checkbox.isSelected }"
+        v-for="checkbox in checkboxes"
         :key="checkbox.value"
-        :click-handler="() => handleClickOnSize(checkbox)">
-      <input
-          type="radio"
-          :value="checkbox.value"
-          :id="checkbox.title"
-          @click="$emit('update:modelValue', $event.target.value)"
-      >
-      <label :for="checkbox.title">{{checkbox.title}}</label>
+        :class="{ active: checkbox.value==currentValue}"
+        @click="handleClick(checkbox.value)">
+      {{ checkbox.title }}
     </UiCustomButton>
   </div>
 </template>
@@ -55,5 +49,9 @@ const handleClickOnSize = (checkbox: Checkbox) => {
   .radio-container {
     display: flex;
     gap: 10px
+  }
+
+  .active {
+    background-color: green;
   }
 </style>
