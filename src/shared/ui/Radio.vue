@@ -17,16 +17,13 @@ const props = defineProps({
       default:[],
       required: true
     },
-    modelValue: {
-      type: Number,
-    }
 })
 
-const emits = defineEmits(["update:modelValue"])
+const model = defineModel();
 let currentValue = props.checkboxes[0].value;
 
 const handleClick = (newValue: number | string) => {
-  emits("update:modelValue", newValue);
+  model.value = newValue;
   currentValue = newValue;
 }
 
