@@ -1,7 +1,7 @@
 const addressSuggestionUrl = "http://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address"
 const token = "48bdcdb43f43be598cec53e5896e6b2b1a0eca54"
-const addressSuggestions = async (query: string) => {
-    const suggestionResponse =  await fetch(addressSuggestionUrl, {
+export const addressSuggestions = async (query: string) => {
+    const suggestionResponse = await fetch(addressSuggestionUrl, {
         method: "POST",
         mode: "cors",
         headers: {
