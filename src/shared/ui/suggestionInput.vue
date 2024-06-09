@@ -1,12 +1,21 @@
 <script setup lang="ts">
   import {addressSuggestions} from "~/app/api/addressSuggestions";
   import {watchDebounced} from "@vueuse/shared";
-
   // TODO: допилить автоимпорт
-  // управление кнопками
-
   const query = ref("");
   const suggestions = ref([]);
+
+  watchDebounced(
+      query,
+      async (query) => {
+        suggestions.value = (await addressSuggestions(query)).suggestions;
+      },
+      { debounce: 500})
+
+
+  const toggleActive = ({type, target}: any) => {
+    type === "focus" ? target.classList.add("active") : target.classList.remove("active");
+  }
   const focusArrowDown = ({target}: any) => {
     const { nextElementSibling } = target;
     nextElementSibling?.tagName == "DIV" ?
@@ -19,16 +28,13 @@
         previousElementSibling.focus() : target.parentElement.lastElementChild.focus();
   }
   const focusEnter = ({target}: any) => {
-    query.value = target.innerText;
+    target.parentElement.firstElementChild.value = target.innerText;
+    suggestions.value = []
   }
 
-  watchDebounced(
-    query,
- async (query) => {
-      suggestions.value = (await addressSuggestions(query)).suggestions;
-    },
-{ debounce: 500})
-
+  const logEvent = (event: any) => {
+    console.log(event)
+  }
 </script>
 
 
@@ -37,24 +43,23 @@
   <div class="input-container">
     <input
         v-model="query"
+        @change="logEvent"
+        class="suggestions__input"
 
         tabindex="1"
         @keydown.down="focusArrowDown"
         @keydown.up="focusArrowUp"
-        @keydown.esc="query=''"
-
-        class="suggestion-input">
-    <div
+        @keydown.esc="query=''">
+    <div class="suggestions__result"
         v-for="suggestion in suggestions"
+        :onfocus="toggleActive"
+        :onblur="toggleActive"
 
+        :tabindex="suggestions.indexOf(suggestion)+2"
         @keydown.enter="focusEnter"
         @keydown.down="focusArrowDown"
         @keydown.up="focusArrowUp"
-        @keydown.esc="query=''"
-
-        onfocus="className='active'"
-        onblur="className=''"
-        :tabindex="suggestions.indexOf(suggestion)+2">
+        @keydown.esc="query=''">
       {{ suggestion.data.region }} {{ suggestion.data.city }} {{ suggestion.data.street_with_type }}
       {{ suggestion.data.house }} {{ suggestion.data.flat }}
     </div>
@@ -62,16 +67,28 @@
 </template>
 
 
-<style scoped>
-  .input-container{
+<style scoped lang="scss">
+  .input-container {
     border-radius: 10px;
     border: 1px solid black;
-    color: black;
+
+    background-color: white;
     width: 300px;
     transition: 0.3ms ease-in-out;
+
+
   }
-  .suggestion-input {
-    height: 30px;
+  .suggestions {
+    &__input {
+      height: 30px;
+      color: black;
+    }
+    &__result {
+      color: black;
+      z-index: 200;
+      position: relative;
+    }
+
   }
   .active {
     background-color: #78ab00;
