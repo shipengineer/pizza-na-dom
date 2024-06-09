@@ -7,16 +7,19 @@
 
   const query = ref("");
   const suggestions = ref([]);
-  const focusDown = ({target}: any) => {
+  const focusArrowDown = ({target}: any) => {
     const { nextElementSibling } = target;
     nextElementSibling?.tagName == "DIV" ?
         nextElementSibling.focus() : target.parentElement.firstElementChild.focus();
   }
-  const focusUp = ({target}: any) => {
+  const focusArrowUp = ({target}: any) => {
     const { previousElementSibling } = target;
     previousElementSibling?.tagName == "DIV" ||
     previousElementSibling?.tagName == "INPUT" ?
         previousElementSibling.focus() : target.parentElement.lastElementChild.focus();
+  }
+  const focusEnter = ({target}: any) => {
+    query.value = target.innerText;
   }
 
   watchDebounced(
@@ -34,16 +37,21 @@
   <div class="input-container">
     <input
         v-model="query"
+
         tabindex="1"
-        @keydown.down="focusDown"
-        @keydown.up="focusUp"
+        @keydown.down="focusArrowDown"
+        @keydown.up="focusArrowUp"
         @keydown.esc="query=''"
+
         class="suggestion-input">
     <div
         v-for="suggestion in suggestions"
-        @keydown.down="focusDown"
-        @keydown.up="focusUp"
+
+        @keydown.enter="focusEnter"
+        @keydown.down="focusArrowDown"
+        @keydown.up="focusArrowUp"
         @keydown.esc="query=''"
+
         onfocus="className='active'"
         onblur="className=''"
         :tabindex="suggestions.indexOf(suggestion)+2">
