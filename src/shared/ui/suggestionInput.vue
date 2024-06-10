@@ -18,10 +18,6 @@
       },
       { debounce: 500})
 
-
-  const toggleActive = ({type, target}: any) => {
-    type === "focus" ? target.classList.add("active") : target.classList.remove("active");
-  }
   const focusArrowDown = ({target}: any) => {
     const { nextElementSibling } = target;
     nextElementSibling?.tagName == "DIV" ?
@@ -44,7 +40,8 @@
 
 <template>
   <UiBaseButton @click="console.log(suggestions)"> Log res</UiBaseButton>
-  <div class="input-container">
+  <div class="input-container"
+       @keydown.esc="query=''">
     <input
       @input="selectedSuggestion !== '' ? selectedSuggestion = '' : ''"
       v-model="query"
@@ -52,23 +49,20 @@
 
       tabindex="1"
       @keydown.down="focusArrowDown"
-      @keydown.up="focusArrowUp"
-      @keydown.esc="query=''">
+      @keydown.up="focusArrowUp">
     <div
         v-if="!selectedSuggestion"
         v-for="suggestion in suggestions"
-
-        class="suggestions__result"
         :key="suggestions.indexOf(suggestion)+2"
-        :onfocus="toggleActive"
-        :onblur="toggleActive"
 
         :tabindex="suggestions.indexOf(suggestion)+2"
+
         @click="focusEnter"
         @keydown.enter="focusEnter"
         @keydown.down="focusArrowDown"
         @keydown.up="focusArrowUp"
-        @keydown.esc="query=''">
+
+        class="suggestions__result">
       {{ suggestion.data.region }} {{ suggestion.data.city }} {{ suggestion.data.street_with_type }}
       {{ suggestion.data.house }} {{ suggestion.data.flat }}
     </div>
@@ -100,10 +94,11 @@
       &:hover {
         background-color: #ff9970;
       }
+      &:focus {
+        background-color: $brand;
+      }
     }
 
   }
-  .active {
-    background-color: $brand;
-  }
+
 </style>
