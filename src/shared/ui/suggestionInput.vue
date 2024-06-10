@@ -1,22 +1,25 @@
 <script setup lang="ts">
-// TODO: допилить автоимпорт
-// TODO: передавать функцию API пропсами что бы инпут мог не только в адреса
-// TODO: сделать фокус на инпут по выбору подсказки на Enter/mouseclick
-// TODO: проверить функцию focusEnter (название selectSuggestion, надо ли сбрасывать список подсказок)
-// TODO: красиво показывать подсказки (скорее всего будет отдельно замороченное место -> вынести в компонент с пропосом с объектом подсказки.
-// TODO: selectedSuggestion -> boolean? isSugggestionPicked?
+// TODO: проверить функцию focusEnter (название selectSuggestion, надо ли сбрасывать список подсказок) 1🦉/10🦉 ✅
+// TODO: selectedSuggestion -> boolean? isSugggestionPicked? 1🦉/10🦉
+// TODO: допилить автоимпорт 3🦉/ 10🦉
+// TODO: передавать функцию API пропсами что бы инпут мог не только в адреса 4🦉/10🦉
+// TODO: сделать фокус на инпут по выбору подсказки на Enter/mouseclick ???🦉/10🦉
+/*+
+    TODO: красиво показывать подсказки (скорее всего будет отдельно замороченное место) =>
+     вынести в компонент с пропосом с объектом подсказки. 8🦉/10🦉
+ */
 
   import {addressSuggestions} from "~/app/api/addressSuggestions";
   import {watchDebounced} from "@vueuse/shared";
 
   const query = ref('');
-  const selectedSuggestion = ref('')
+  const isSuggestionPicked = ref(false)
   const suggestions = ref([]);
 
   watchDebounced(
       query,
       async (query) => {
-        if (!selectedSuggestion.value) {
+        if (!isSuggestionPicked.value) {
           suggestions.value = (await addressSuggestions(query)).suggestions;
         }
       },
@@ -33,9 +36,9 @@
     previousElementSibling?.tagName == "INPUT" ?
         previousElementSibling.focus() : target.parentElement.lastElementChild.focus();
   }
-  const focusEnter = ({target}: any) => {
-    selectedSuggestion.value = target.innerText;
-    query.value = selectedSuggestion.value;
+  const pickSelectedSuggestion = ({target}: any) => {
+    isSuggestionPicked.value = true;
+    query.value = target.innerText;
     suggestions.value=[]
   }
 
@@ -46,7 +49,7 @@
   <div class="input-container"
        @keydown.esc="query=''">
     <input
-      @input="selectedSuggestion !== '' ? selectedSuggestion = '' : ''"
+      @input="isSuggestionPicked ? isSuggestionPicked = false : ''"
       v-model="query"
       class="suggestions__input"
 
@@ -55,14 +58,14 @@
       @keydown.up="focusArrowUp"
     />
     <div
-        v-if="!selectedSuggestion"
+        v-if="!isSuggestionPicked"
         v-for="suggestion in suggestions"
         :key="suggestions.indexOf(suggestion)+2"
 
         :tabindex="suggestions.indexOf(suggestion)+2"
 
-        @click="focusEnter"
-        @keydown.enter="focusEnter"
+        @click="pickSelectedSuggestion"
+        @keydown.enter="pickSelectedSuggestion"
         @keydown.down="focusArrowDown"
         @keydown.up="focusArrowUp"
 
