@@ -3,7 +3,8 @@
   import {watchDebounced} from "@vueuse/shared";
   // TODO: допилить автоимпорт
   // TODO: передавать функцию API пропсами что бы инпут мог не только в адреса
-  const query = ref("");
+  const query = ref('');
+  const selectedSuggestion = ref('')
   const suggestions = ref([]);
 
   watchDebounced(
@@ -29,10 +30,9 @@
         previousElementSibling.focus() : target.parentElement.lastElementChild.focus();
   }
   const focusEnter = ({target}: any) => {
-    target.parentElement.firstElementChild.value = target.innerText;
-    setTimeout(() => {
-      suggestions.value=[]
-    }, 1000)
+    selectedSuggestion.value = target.innerText;
+    query.value = selectedSuggestion.value;
+    suggestions.value=[]
   }
 
 </script>
@@ -42,22 +42,25 @@
   <UiBaseButton @click="console.log(suggestions)"> Log res</UiBaseButton>
   <div class="input-container">
     <input
-        v-model="query"
-        class="suggestions__input"
+      @input="selectedSuggestion = ''"
+      v-model="query"
+      class="suggestions__input"
 
-        tabindex="1"
-        @keydown.down="focusArrowDown"
-        @keydown.up="focusArrowUp"
-        @keydown.esc="query=''">
-    <div class="suggestions__result"
-         v-for="suggestion in suggestions"
-         :key="suggestions.indexOf(suggestion)+2"
-         :onfocus="toggleActive"
-         :onblur="toggleActive"
+      tabindex="1"
+      @keydown.down="focusArrowDown"
+      @keydown.up="focusArrowUp"
+      @keydown.esc="query=''">
+    <div
+        class="suggestions__result"
+        v-if="!selectedSuggestion"
+        v-for="suggestion in suggestions"
+        :key="suggestions.indexOf(suggestion)+2"
+        :onfocus="toggleActive"
+        :onblur="toggleActive"
 
-         :tabindex="suggestions.indexOf(suggestion)+2"
-         @click="focusEnter"
-         @keydown.enter="focusEnter"
+        :tabindex="suggestions.indexOf(suggestion)+2"
+        @click="focusEnter"
+        @keydown.enter="focusEnter"
         @keydown.down="focusArrowDown"
         @keydown.up="focusArrowUp"
         @keydown.esc="query=''">
