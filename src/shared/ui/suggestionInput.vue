@@ -2,6 +2,7 @@
   import {addressSuggestions} from "~/app/api/addressSuggestions";
   import {watchDebounced} from "@vueuse/shared";
   // TODO: допилить автоимпорт
+  // TODO: передавать функцию API пропсами что бы инпут мог не только в адреса
   const query = ref("");
   const suggestions = ref([]);
 
