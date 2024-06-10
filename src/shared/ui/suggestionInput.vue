@@ -2,6 +2,9 @@
 // TODO: допилить автоимпорт
 // TODO: передавать функцию API пропсами что бы инпут мог не только в адреса
 // TODO: сделать фокус на инпут по выбору подсказки на Enter/mouseclick
+// TODO: проверить функцию focusEnter (название selectSuggestion, надо ли сбрасывать список подсказок)
+// TODO: красиво показывать подсказки (скорее всего будет отдельно замороченное место -> вынести в компонент с пропосом с объектом подсказки.
+// TODO: selectedSuggestion -> boolean? isSugggestionPicked?
 
   import {addressSuggestions} from "~/app/api/addressSuggestions";
   import {watchDebounced} from "@vueuse/shared";
@@ -40,7 +43,6 @@
 
 
 <template>
-  <UiBaseButton @click="console.log(suggestions)"> Log res</UiBaseButton>
   <div class="input-container"
        @keydown.esc="query=''">
     <input
@@ -50,7 +52,8 @@
 
       tabindex="1"
       @keydown.down="focusArrowDown"
-      @keydown.up="focusArrowUp">
+      @keydown.up="focusArrowUp"
+    />
     <div
         v-if="!selectedSuggestion"
         v-for="suggestion in suggestions"
