@@ -4,7 +4,13 @@ export default defineNuxtConfig({
     ['@pinia/nuxt', { autoImports: ['defineStore', 'storeToRefs'] }],
   ],
   imports: {
-    dirs: ['./app/stores/**']
+    dirs: ['./app/stores/**'],
+    presets: [
+      {
+        from: '@vueuse/shared',
+        imports: ['watchDebounced']
+      }
+    ]
   },
   app: {
     head: {

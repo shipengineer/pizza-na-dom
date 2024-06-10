@@ -10,7 +10,6 @@
  */
 
   import {addressSuggestions} from "~/app/api/addressSuggestions";
-  import {watchDebounced} from "@vueuse/shared";
 
   const query = ref('');
   const isSuggestionPicked = ref(false)

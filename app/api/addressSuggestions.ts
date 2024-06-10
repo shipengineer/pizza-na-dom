@@ -13,6 +13,7 @@ export const addressSuggestions = async (query: string) => {
     })
     if (!suggestionResponse.ok) {
         console.log('Похоже, у нас что-то сломалось, зайдите попозже.')
+        console.log(suggestionResponse)
     }
     return await suggestionResponse.json();
 }
