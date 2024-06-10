@@ -1,6 +1,6 @@
 <script setup lang="ts">
-// TODO: проверить функцию focusEnter (название selectSuggestion, надо ли сбрасывать список подсказок) 1🦉/10🦉 ✅
-// TODO: selectedSuggestion -> boolean? isSugggestionPicked? 1🦉/10🦉
+// TODO: проверить функцию focusEnter (название selectSuggestion, надо ли сбрасывать список подсказок) 1🦉/10🦉 DONE!
+// TODO: selectedSuggestion -> boolean? isSuggestionPicked? 1🦉/10🦉 DONE!
 // TODO: допилить автоимпорт 3🦉/ 10🦉
 // TODO: передавать функцию API пропсами что бы инпут мог не только в адреса 4🦉/10🦉
 // TODO: сделать фокус на инпут по выбору подсказки на Enter/mouseclick ???🦉/10🦉
