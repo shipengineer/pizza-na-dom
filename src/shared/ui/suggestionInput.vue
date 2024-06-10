@@ -1,8 +1,6 @@
 <script setup lang="ts">
 // TODO: допилить автоимпорт
 // TODO: передавать функцию API пропсами что бы инпут мог не только в адреса
-// проблема - в текущем подходе идет лишний запрос к API потому что нажатием enter по подсказке меняет query
-
 
   import {addressSuggestions} from "~/app/api/addressSuggestions";
   import {watchDebounced} from "@vueuse/shared";
@@ -14,7 +12,9 @@
   watchDebounced(
       query,
       async (query) => {
-        suggestions.value = (await addressSuggestions(query)).suggestions;
+        if (!selectedSuggestion.value) {
+          suggestions.value = (await addressSuggestions(query)).suggestions;
+        }
       },
       { debounce: 500})
 
