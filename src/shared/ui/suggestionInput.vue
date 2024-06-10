@@ -1,8 +1,12 @@
 <script setup lang="ts">
+// TODO: допилить автоимпорт
+// TODO: передавать функцию API пропсами что бы инпут мог не только в адреса
+// проблема - в текущем подходе идет лишний запрос к API потому что нажатием enter по подсказке меняет query
+
+
   import {addressSuggestions} from "~/app/api/addressSuggestions";
   import {watchDebounced} from "@vueuse/shared";
-  // TODO: допилить автоимпорт
-  // TODO: передавать функцию API пропсами что бы инпут мог не только в адреса
+
   const query = ref('');
   const selectedSuggestion = ref('')
   const suggestions = ref([]);
@@ -42,7 +46,7 @@
   <UiBaseButton @click="console.log(suggestions)"> Log res</UiBaseButton>
   <div class="input-container">
     <input
-      @input="selectedSuggestion = ''"
+      @input="selectedSuggestion !== '' ? selectedSuggestion = '' : ''"
       v-model="query"
       class="suggestions__input"
 
@@ -51,9 +55,10 @@
       @keydown.up="focusArrowUp"
       @keydown.esc="query=''">
     <div
-        class="suggestions__result"
         v-if="!selectedSuggestion"
         v-for="suggestion in suggestions"
+
+        class="suggestions__result"
         :key="suggestions.indexOf(suggestion)+2"
         :onfocus="toggleActive"
         :onblur="toggleActive"
