@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // TODO: допилить автоимпорт
 // TODO: передавать функцию API пропсами что бы инпут мог не только в адреса
+// TODO: сделать фокус на инпут по выбору подсказки на Enter/mouseclick
 
   import {addressSuggestions} from "~/app/api/addressSuggestions";
   import {watchDebounced} from "@vueuse/shared";
