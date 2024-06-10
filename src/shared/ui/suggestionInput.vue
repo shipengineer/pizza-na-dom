@@ -29,12 +29,11 @@
   }
   const focusEnter = ({target}: any) => {
     target.parentElement.firstElementChild.value = target.innerText;
-    suggestions.value = []
+    setTimeout(() => {
+      suggestions.value=[]
+    }, 1000)
   }
 
-  const logEvent = (event: any) => {
-    console.log(event)
-  }
 </script>
 
 
@@ -43,7 +42,6 @@
   <div class="input-container">
     <input
         v-model="query"
-        @change="logEvent"
         class="suggestions__input"
 
         tabindex="1"
@@ -51,12 +49,14 @@
         @keydown.up="focusArrowUp"
         @keydown.esc="query=''">
     <div class="suggestions__result"
-        v-for="suggestion in suggestions"
-        :onfocus="toggleActive"
-        :onblur="toggleActive"
+         v-for="suggestion in suggestions"
+         :key="suggestions.indexOf(suggestion)+2"
+         :onfocus="toggleActive"
+         :onblur="toggleActive"
 
-        :tabindex="suggestions.indexOf(suggestion)+2"
-        @keydown.enter="focusEnter"
+         :tabindex="suggestions.indexOf(suggestion)+2"
+         @click="focusEnter"
+         @keydown.enter="focusEnter"
         @keydown.down="focusArrowDown"
         @keydown.up="focusArrowUp"
         @keydown.esc="query=''">
@@ -82,15 +82,19 @@
     &__input {
       height: 30px;
       color: black;
+      width: 300px;
     }
     &__result {
       color: black;
       z-index: 200;
       position: relative;
+      &:hover {
+        background-color: #ff9970;
+      }
     }
 
   }
   .active {
-    background-color: #78ab00;
+    background-color: $brand;
   }
 </style>
