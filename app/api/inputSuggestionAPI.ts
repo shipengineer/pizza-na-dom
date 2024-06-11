@@ -1,7 +1,7 @@
 import type {IConfig} from "~/app/api/IConfig";
 import {currentConfig} from "~/app/api/config";
 
-class InputSuggestionAPI {
+class SuggestionAPI {
     addressSuggestionUrl: string
     token: string
 
@@ -29,4 +29,6 @@ class InputSuggestionAPI {
     }
 }
 
-export const inputSuggestionAPI = new InputSuggestionAPI(currentConfig);
+const suggestionAPI = new SuggestionAPI(currentConfig);
+
+export const addressSuggestion = suggestionAPI.addressSuggestions;
