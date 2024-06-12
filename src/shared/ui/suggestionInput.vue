@@ -86,7 +86,6 @@
       @keydown.down="focusArrowDown"
       @keydown.up="focusArrowUp"
     />
-    <!-- v-if: Если подсказка выбрана (isSuggestionPicked == true) => не отрисовываем подсказки  -->
     <div
         v-if="!isSuggestionPicked"
         v-for="suggestion in suggestions"
