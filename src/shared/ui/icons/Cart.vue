@@ -1,6 +1,7 @@
 <template>
-    <svg :fill="props.color" height="32px" width="32px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
-	 viewBox="0 0 53.524 53.524" xml:space="preserve">
+  <svg :fill="props.color" height="32px" width="32px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+       xmlns:xlink="http://www.w3.org/1999/xlink"
+       viewBox="0 0 53.524 53.524" xml:space="preserve">
 <g>
 	<path d="M53.262,22.489c0.03-0.16,0.03-0.33,0.01-0.55c-0.04-0.43-0.29-0.87-0.75-0.95c-3.76-0.71-7.61-0.56-11.48-0.26
 		c-0.01-0.04-0.01-0.08-0.04-0.13c-1.79-3.14-3.19-6.49-5-9.63c-1.19-2.05-3.26-5.91-6.12-5.73c-0.52,0.04-1.03,0.46-0.99,1.02
@@ -29,11 +30,11 @@
 </template>
 
 <script setup lang="ts">
-const props=defineProps({
-    color:{
-        type:String,
-        default:'#000'
-    }
+const props = defineProps({
+  color: {
+    type: String,
+    default: '#000'
+  }
 })
 </script>
 
