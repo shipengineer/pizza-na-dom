@@ -12,6 +12,10 @@
   const isSuggestionPicked = ref(false)
   const suggestions = ref([]);
 
+  onMounted(() => {
+    const input = document.querySelector("input")
+  })
+
   watchDebounced(
       query,
       async (query) => {
