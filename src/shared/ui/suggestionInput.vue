@@ -3,15 +3,15 @@
 // TODO: selectedSuggestion -> boolean? isSuggestionPicked? 1🦉/10🦉 DONE!
 // TODO: допилить автоимпорт 3🦉/ 10🦉
 // TODO: передавать функцию API пропсами что бы инпут мог не только в адреса 4🦉/10🦉
-// TODO: сделать фокус на инпут по выбору подсказки на Enter/mouseclick ???🦉/10🦉
+// TODO: сделать фокус на инпут по выбору подсказки на Enter/mouseclick ???🦉/10🦉 DONE!
 /*+
     TODO: красиво показывать подсказки (скорее всего будет отдельно замороченное место) =>
      вынести в компонент с пропосом с объектом подсказки. 8🦉/10🦉
  */
 
-  import {addressSuggestions} from "~/app/api/addressSuggestions";
+import {suggestionsAPI} from "~/app/api/inputSuggestionAPI";
 
-  const query = ref('');
+const query = ref('');
   const isSuggestionPicked = ref(false)
   const suggestions = ref([]);
 
@@ -19,7 +19,7 @@
       query,
       async (query) => {
         if (!isSuggestionPicked.value) {
-          suggestions.value = (await addressSuggestions(query)).suggestions;
+          suggestions.value = (await suggestionsAPI.addressSuggestions(query)).suggestions;
         }
       },
       { debounce: 500})
@@ -36,9 +36,15 @@
         previousElementSibling.focus() : target.parentElement.lastElementChild.focus();
   }
   const pickSelectedSuggestion = ({target}: any) => {
+    target.parentElement.firstElementChild.focus()
     isSuggestionPicked.value = true;
     query.value = target.innerText;
-    suggestions.value=[]
+    suggestions.value=[];
+  }
+  const caretToEndReplacer = ({target}: any) => {
+    setTimeout(() => {
+      target.selectionStart = target.value.length;
+    },0)
   }
 
 </script>
@@ -49,6 +55,7 @@
        @keydown.esc="query=''">
     <input
       @input="isSuggestionPicked ? isSuggestionPicked = false : ''"
+      @focus="caretToEndReplacer"
       v-model="query"
       class="suggestions__input"
 
@@ -84,8 +91,6 @@
     background-color: white;
     width: 300px;
     transition: 0.3ms ease-in-out;
-
-
   }
   .suggestions {
     &__input {
@@ -104,7 +109,5 @@
         background-color: $brand;
       }
     }
-
   }
-
 </style>

@@ -1,7 +1,7 @@
 import type {IConfig} from "~/app/api/IConfig";
 import {currentConfig} from "~/app/api/config";
 
-class SuggestionAPI {
+class SuggestionsAPI {
     addressSuggestionUrl: string
     token: string
 
@@ -23,12 +23,9 @@ class SuggestionAPI {
         })
         if (!suggestionResponse.ok) {
             console.log('Похоже, у нас что-то сломалось, зайдите попозже.')
-            console.log(suggestionResponse)
         }
         return await suggestionResponse.json();
     }
 }
 
-const suggestionAPI = new SuggestionAPI(currentConfig);
-
-export const addressSuggestion = suggestionAPI.addressSuggestions;
+export const suggestionsAPI = new SuggestionsAPI(currentConfig);

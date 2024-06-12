@@ -1,7 +1,7 @@
 <template>
   <div>
     Это главная страница
-    <UiSuggestionInput></UiSuggestionInput>
+    <UiSuggestionInput/>
   </div>
 </template>
 
