@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // TODO: допилить автоимпорт 3🦉/ 10🦉
-// TODO: передавать функцию API пропсами что бы инпут мог не только в адреса 4🦉/10🦉
+// TODO: передавать функцию API пропсами что бы инпут мог не только в адреса 4🦉/10🦉 -> Sergei
 /*+
     TODO: красиво показывать подсказки (скорее всего будет отдельно замороченное место) =>
      вынести в компонент с пропосом с объектом подсказки. 8🦉/10🦉
@@ -11,9 +11,10 @@
   const query = ref('');
   const isSuggestionPicked = ref(false)
   const suggestions = ref([]);
+  const inputRef = ref();
 
   onMounted(() => {
-    const input = document.querySelector("input")
+    inputRef.value = document.querySelector("input");
   })
 
   watchDebounced(
@@ -42,11 +43,10 @@
 
  Фокус на input всегда перемещает каретку в конец текста input (caretToInputEndReplacer).
  */
-  const input = () => {return document.querySelector("input");} //исключительно ради читаемости следующих функций.
   const focusArrowDown = ({target}: any) => {
     const { nextElementSibling } = target;
     nextElementSibling?.tagName == "DIV" ?
-        nextElementSibling.focus() : input()?.focus();
+        nextElementSibling.focus() : inputRef.value.focus();
   }
   const focusArrowUp = ({target}: any) => {
     const { previousElementSibling } = target;
@@ -55,7 +55,7 @@
         previousElementSibling.focus() : target.parentElement.lastElementChild.focus();
   }
   const pickFocusedSuggestion = ({target}: any) => {
-    input()?.focus();
+    inputRef.value.focus();
     isSuggestionPicked.value = true;
     query.value = target.innerText;
     suggestions.value=[];
@@ -67,7 +67,7 @@
   }
   const caretToInputEndReplacer = () => {
     setTimeout(() => { // ставим перемещение каретки в eventLoop отдельной макрозадачей, иначе не работает.
-      input().selectionStart = input().value.length;
+      inputRef.value.selectionStart = inputRef.value.value.length;
     },0)
   }
 // endregion
