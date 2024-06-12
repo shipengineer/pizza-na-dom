@@ -7,8 +7,6 @@
  */
 
 import {suggestionsAPI} from "~/app/api/inputSuggestionAPI";
-import {generateUuid} from "vscode-languageclient/lib/common/utils/uuid";
-import {target} from "@vue/devtools-shared";
 
 const query = ref('');
 const isSuggestionPicked = ref(false)
@@ -84,7 +82,6 @@ const caretToInputEndReplacer = ({target}: any) => {
       @focus="caretToInputEndReplacer"
       v-model="query"
 
-      :id = "inputID"
       class="suggestions__input"
 
       tabindex="1"
