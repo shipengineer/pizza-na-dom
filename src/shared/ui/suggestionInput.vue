@@ -6,17 +6,23 @@
      вынести в компонент с пропосом с объектом подсказки. 8🦉/10🦉
  */
 
-import {suggestionsAPI} from "~/app/api/inputSuggestionAPI";
-
 const query = ref('');
 const isSuggestionPicked = ref(false)
 const suggestions = ref([]);
+
+const props = defineProps({
+  apiCallback: {
+    type: Function,
+    required: true,
+  },
+})
 
 watchDebounced(
     query,
     async (query) => {
       if (!isSuggestionPicked.value) { // если подсказка выбрана НЕ делаем запрос к API.
-        suggestions.value = (await suggestionsAPI.addressSuggestions(query)).suggestions;
+        suggestions.value = (await props.apiCallback(query)).suggestions;
+        console.log(suggestions)
       }
     },
     { debounce: 500}

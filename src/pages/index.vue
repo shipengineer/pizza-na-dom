@@ -1,11 +1,13 @@
 <template>
   <div>
     Это главная страница
-    <UiSuggestionInput></UiSuggestionInput>
+    <UiSuggestionInput :api-callback="addressSuggestions"></UiSuggestionInput>
   </div>
 </template>
 
 <script setup lang="ts">
+import {addressSuggestions} from "~/app/api/addressSuggestions";
+
 
 </script>
 
