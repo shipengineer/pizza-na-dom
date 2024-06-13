@@ -10,6 +10,12 @@
  */
 
 import {addressSuggestions} from "~/app/api/addressSuggestions";
+const props = defineProps({
+  func: {
+    type: Function,
+    required: true,
+  },
+})
 
 const query = ref('');
 const isSuggestionPicked = ref(false)
@@ -19,7 +25,7 @@ watchDebounced(
     query,
     async (query) => {
       if (!isSuggestionPicked.value) {
-        suggestions.value = (await addressSuggestions(query)).suggestions;
+        suggestions.value = (await props.func(query)).suggestions;
       }
     },
     {debounce: 500}

@@ -6,11 +6,14 @@
       <UiIconsCross color="#d3d3d3"/>
     </UiButton>
     <UiRadio :buttons="buttons">13</UiRadio>
-    <UiSuggestionInput/>
+    <UiSuggestionInput :func="func"/>
   </div>
 </template>
 
 <script setup lang="ts">
+import {addressSuggestions} from "~/app/api/addressSuggestions";
+
+const func = addressSuggestions;
 const theme = ref('light')
 const buttons = ref([
   {value: 1, title: '1'},
