@@ -1,98 +1,68 @@
 <script setup lang="ts">
 // TODO: допилить автоимпорт 3🦉/ 10🦉
-// TODO: передавать функцию API пропсами что бы инпут мог не только в адреса 4🦉/10🦉 -> Sergei
-/*+
-    TODO: красиво показывать подсказки (скорее всего будет отдельно замороченное место) =>
-     вынести в компонент с пропосом с объектом подсказки. 8🦉/10🦉
- */
+// TODO: функция подсказки по емайлу для инпута ???🦉/10🦉
+// TODO: красиво показывать подсказки (скорее всего будет отдельно замороченное место) вынести в компонент с пропосом
+//  с объектом подсказки. 8🦉/10🦉
+
+import {addressSuggestions} from "~/app/api/addressSuggestions";
+
+const props = defineProps({
+  func: {
+    type: Function,
+    required: true,
+  }
+})
 
 const query = ref('');
 const isSuggestionPicked = ref(false)
 const suggestions = ref([]);
-
-const props = defineProps({
-  apiCallback: {
-    type: Function,
-    required: true,
-  },
-})
-
+console.log(props.func.name)
 watchDebounced(
     query,
     async (query) => {
-      if (!isSuggestionPicked.value) { // если подсказка выбрана НЕ делаем запрос к API.
-        suggestions.value = (await props.apiCallback(query)).suggestions;
-        console.log(suggestions)
+      if (!isSuggestionPicked.value) {
+        suggestions.value = (await props.func(query)).suggestions;
       }
     },
-    { debounce: 500}
+    {debounce: 500}
 )
 
-// region Навигация стрелками на клавиатуре и поведение при выборе подсказки.
-/**
- target.parentElement.firstElementChild == input
-
- Навигация построена на том, что input и div'ы с подсказками лежат в одном контейнере с классом input-container.
- При нажатии стрелок проверяем tagName брата-соседа и двигаем фокус:
- - если сосед - DIV, двигаем фокус на него.
- - если соседа нет (вверх от input, вниз от последнего div) или он не DIV (вверх от первого div), то
- двигаем фокус на последний div (от input наверх) или к input (от последнего div вниз).
-
- Enter/mouseclick на подсказку перемещает фокус на input, ставит флаг isSuggestionPicked в true, меняет текст инпута на
- текст подсказки и очищает список подсказок (suggestions).
-
- Esc на input и div-подсказках очищает input, ставит флаг isSuggestionPicked в true для предотвращения лишнего запроса
- к API и очищает список подсказок (suggestions).
-
- Фокус на input всегда перемещает каретку в конец текста input (caretToInputEndReplacer).
- */
 const focusArrowDown = ({target}: any) => {
-  const { nextElementSibling } = target;
+  const {nextElementSibling} = target;
   nextElementSibling?.tagName == "DIV" ?
       nextElementSibling.focus() : target.parentElement.firstElementChild.focus();
 }
 const focusArrowUp = ({target}: any) => {
-  const { previousElementSibling } = target;
+  const {previousElementSibling} = target;
   previousElementSibling?.tagName == "DIV" ||
   previousElementSibling?.tagName == "INPUT" ?
       previousElementSibling.focus() : target.parentElement.lastElementChild.focus();
 }
-const pickFocusedSuggestion = ({target}: any) => {
-  target.parentElement.firstElementChild.focus();
+const pickSelectedSuggestion = ({target}: any) => {
   isSuggestionPicked.value = true;
   query.value = target.innerText;
-  suggestions.value=[];
+  suggestions.value = []
 }
-const clearInput = () => {
-  query.value = '';
-  isSuggestionPicked.value = true;
-  suggestions.value=[];
+const focusInput = ({target}: any) => {
+  setTimeout(() => {
+    target.selectionStart = target.value.length;
+  }, 0)
 }
-const setIsSuggestionPickedFalse = () => {
-  isSuggestionPicked.value ? isSuggestionPicked.value = false : '';
-}
-const caretToInputEndReplacer = ({target}: any) => {
-  setTimeout(() => { // ставим перемещение каретки в eventLoop отдельной макрозадачей, иначе не работает.
-    target.parentElement.firstElementChild.selectionStart = target.parentElement.firstElementChild.value.length;
-  },0)
-}
-// endregion
 </script>
 
 
 <template>
   <div class="input-container"
-     @keydown.esc="clearInput">
+       @keydown.esc="query=''">
     <input
-      @input="setIsSuggestionPickedFalse"
-      @focus="caretToInputEndReplacer"
-      v-model="query"
+        @input="isSuggestionPicked ? isSuggestionPicked = false : ''"
+        v-model="query"
+        class="suggestions__input"
 
-      class="suggestions__input"
-
-      tabindex="1"
-      @keydown.down="focusArrowDown"
-      @keydown.up="focusArrowUp"
+        tabindex="1"
+        @keydown.down="focusArrowDown"
+        @keydown.up="focusArrowUp"
+        @focus="focusInput"
     />
     <div
         v-if="!isSuggestionPicked"
@@ -101,44 +71,57 @@ const caretToInputEndReplacer = ({target}: any) => {
 
         :tabindex="suggestions.indexOf(suggestion)+2"
 
-        @click="pickFocusedSuggestion"
-        @keydown.enter="pickFocusedSuggestion"
+        @click="pickSelectedSuggestion"
+        @keydown.enter="pickSelectedSuggestion"
         @keydown.down="focusArrowDown"
         @keydown.up="focusArrowUp"
 
         class="suggestions__result">
-      {{ suggestion.data.region }} {{ suggestion.data.city }} {{ suggestion.data.street_with_type }}
-      {{ suggestion.data.house }} {{ suggestion.data.flat }}
+      <span v-if="func.name === 'addressSuggestions'">
+              {{ suggestion.data.region }} {{ suggestion.data.city }} {{ suggestion.data.street_with_type }}
+            {{ suggestion.data.house }} {{ suggestion.data.flat }}
+      </span>
+      <span v-else>
+              {{ suggestion.value }}
+      </span>
     </div>
   </div>
 </template>
 
 
 <style scoped lang="scss">
-  .input-container {
-    border-radius: 10px;
-    border: 1px solid black;
+.input-container {
+  border-radius: 10px;
+  border: 1px solid black;
 
-    background-color: white;
+  background-color: white;
+  width: 300px;
+  transition: 0.3ms ease-in-out;
+
+
+}
+
+.suggestions {
+  &__input {
+    height: 30px;
+    color: black;
     width: 300px;
-    transition: 0.3ms ease-in-out;
   }
-  .suggestions {
-    &__input {
-      height: 30px;
-      color: black;
-      width: 300px;
+
+  &__result {
+    color: black;
+    z-index: 200;
+    position: relative;
+
+    &:hover {
+      background-color: #ff9970;
     }
-    &__result {
-      color: black;
-      z-index: 200;
-      position: relative;
-      &:hover {
-        background-color: #ff9970;
-      }
-      &:focus {
-        background-color: $brand;
-      }
+
+    &:focus {
+      background-color: $brand;
     }
   }
+
+}
+
 </style>

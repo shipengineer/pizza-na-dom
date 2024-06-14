@@ -1,5 +1,5 @@
-export const addressSuggestions = async (query: string) => {
-    const suggestionResponse = await fetch(useRuntimeConfig().public.addressSuggestionUrl, {
+export const emailSuggestions = async (query: string) => {
+    const suggestionResponse = await fetch(useRuntimeConfig().public.emailSuggestionUrl, {
         method: "POST",
         mode: "cors",
         headers: {
