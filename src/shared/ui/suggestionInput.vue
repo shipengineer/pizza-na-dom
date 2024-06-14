@@ -5,6 +5,7 @@
 //  с объектом подсказки. 8🦉/10🦉
 
 import {addressSuggestions} from "~/app/api/addressSuggestions";
+
 const props = defineProps({
   func: {
     type: Function,
@@ -15,7 +16,7 @@ const props = defineProps({
 const query = ref('');
 const isSuggestionPicked = ref(false)
 const suggestions = ref([]);
-
+console.log(props.func.name)
 watchDebounced(
     query,
     async (query) => {
@@ -76,8 +77,13 @@ const focusInput = ({target}: any) => {
         @keydown.up="focusArrowUp"
 
         class="suggestions__result">
-      {{ suggestion.data.region }} {{ suggestion.data.city }} {{ suggestion.data.street_with_type }}
-      {{ suggestion.data.house }} {{ suggestion.data.flat }}
+      <span v-if="func.name === 'addressSuggestions'">
+              {{ suggestion.data.region }} {{ suggestion.data.city }} {{ suggestion.data.street_with_type }}
+            {{ suggestion.data.house }} {{ suggestion.data.flat }}
+      </span>
+      <span v-else>
+              {{ suggestion.value }}
+      </span>
     </div>
   </div>
 </template>

@@ -1,8 +1,9 @@
 export default defineNuxtConfig({
     runtimeConfig: {
         public: {
-            addressSuggestionUrl: process.env.NUXT_PUBLIC_ADDRESS_SUGGESTION_URL,
             apiToken: process.env.NUXT_API_TOKEN,
+            addressSuggestionUrl: process.env.NUXT_PUBLIC_ADDRESS_SUGGESTION_URL,
+            emailSuggestionUrl: process.env.NUXT_PUBLIC_EMAIL_SUGGESTION_URL,
         }
     },
     devtools: {enabled: true},

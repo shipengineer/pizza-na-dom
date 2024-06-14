@@ -5,15 +5,15 @@
       close
       <UiIconsCross color="#d3d3d3"/>
     </UiButton>
-    <UiRadio :buttons="buttons">13</UiRadio>
-    <UiSuggestionInput :func="func"/>
+    <UiSuggestionInput :func="addressSuggestions"/>
+    <UiSuggestionInput :func="emailSuggestions"/>
   </div>
 </template>
 
 <script setup lang="ts">
 import {addressSuggestions} from "~/app/api/addressSuggestions";
+import {emailSuggestions} from "~/app/api/emailSuggestions";
 
-const func = addressSuggestions;
 const theme = ref('light')
 const buttons = ref([
   {value: 1, title: '1'},
