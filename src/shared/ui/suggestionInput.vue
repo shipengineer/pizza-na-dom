@@ -105,7 +105,7 @@ const caretToInputEndReplacer = ({target}: any) => {
         @keydown.up="focusArrowUp"
 
         class="suggestions__result">
-      <span v-if="func.name === 'addressSuggestions'">
+      <span v-if="apiCallback.name === 'addressSuggestions'">
               {{ suggestion.data.region }} {{ suggestion.data.city }} {{ suggestion.data.street_with_type }}
             {{ suggestion.data.house }} {{ suggestion.data.flat }}
       </span>
