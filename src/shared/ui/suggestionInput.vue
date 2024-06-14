@@ -4,65 +4,93 @@
 // TODO: красиво показывать подсказки (скорее всего будет отдельно замороченное место) вынести в компонент с пропосом
 //  с объектом подсказки. 8🦉/10🦉
 
-import {addressSuggestions} from "~/app/api/addressSuggestions";
+const query = ref('');
+const isSuggestionPicked = ref(false)
+const suggestions = ref([]);
 
 const props = defineProps({
-  func: {
+  apiCallback: {
     type: Function,
     required: true,
   }
 })
 
-const query = ref('');
-const isSuggestionPicked = ref(false)
-const suggestions = ref([]);
-console.log(props.func.name)
 watchDebounced(
     query,
     async (query) => {
-      if (!isSuggestionPicked.value) {
-        suggestions.value = (await props.func(query)).suggestions;
+      if (!isSuggestionPicked.value) { // если подсказка выбрана НЕ делаем запрос к API.
+        suggestions.value = (await props.apiCallback(query)).suggestions;
+        console.log(suggestions)
       }
     },
-    {debounce: 500}
+    { debounce: 500}
 )
 
+// region Навигация стрелками на клавиатуре и поведение при выборе подсказки.
+/**
+ target.parentElement.firstElementChild == input
+
+ Навигация построена на том, что input и div'ы с подсказками лежат в одном контейнере с классом input-container.
+ При нажатии стрелок проверяем tagName брата-соседа и двигаем фокус:
+ - если сосед - DIV, двигаем фокус на него.
+ - если соседа нет (вверх от input, вниз от последнего div) или он не DIV (вверх от первого div), то
+ двигаем фокус на последний div (от input наверх) или к input (от последнего div вниз).
+
+ Enter/mouseclick на подсказку перемещает фокус на input, ставит флаг isSuggestionPicked в true, меняет текст инпута на
+ текст подсказки и очищает список подсказок (suggestions).
+
+ Esc на input и div-подсказках очищает input, ставит флаг isSuggestionPicked в true для предотвращения лишнего запроса
+ к API и очищает список подсказок (suggestions).
+
+ Фокус на input всегда перемещает каретку в конец текста input (caretToInputEndReplacer).
+ */
 const focusArrowDown = ({target}: any) => {
-  const {nextElementSibling} = target;
+  const { nextElementSibling } = target;
   nextElementSibling?.tagName == "DIV" ?
       nextElementSibling.focus() : target.parentElement.firstElementChild.focus();
 }
 const focusArrowUp = ({target}: any) => {
-  const {previousElementSibling} = target;
+  const { previousElementSibling } = target;
   previousElementSibling?.tagName == "DIV" ||
   previousElementSibling?.tagName == "INPUT" ?
       previousElementSibling.focus() : target.parentElement.lastElementChild.focus();
 }
-const pickSelectedSuggestion = ({target}: any) => {
+const pickFocusedSuggestion = ({target}: any) => {
+  target.parentElement.firstElementChild.focus();
   isSuggestionPicked.value = true;
   query.value = target.innerText;
-  suggestions.value = []
+  suggestions.value=[];
 }
-const focusInput = ({target}: any) => {
-  setTimeout(() => {
-    target.selectionStart = target.value.length;
-  }, 0)
+const clearInput = () => {
+  query.value = '';
+  isSuggestionPicked.value = true;
+  suggestions.value=[];
 }
+const setIsSuggestionPickedFalse = () => {
+  isSuggestionPicked.value ? isSuggestionPicked.value = false : '';
+}
+const caretToInputEndReplacer = ({target}: any) => {
+  setTimeout(() => { // ставим перемещение каретки в eventLoop отдельной макрозадачей, иначе не работает.
+    target.parentElement.firstElementChild.selectionStart = target.parentElement.firstElementChild.value.length;
+  },0)
+}
+// endregion
 </script>
 
 
 <template>
   <div class="input-container"
-       @keydown.esc="query=''">
+     @keydown.esc="clearInput">
     <input
-        @input="isSuggestionPicked ? isSuggestionPicked = false : ''"
-        v-model="query"
-        class="suggestions__input"
+      @input="setIsSuggestionPickedFalse"
+      @focus="caretToInputEndReplacer"
+      v-model="query"
 
-        tabindex="1"
-        @keydown.down="focusArrowDown"
-        @keydown.up="focusArrowUp"
-        @focus="focusInput"
+      class="suggestions__input"
+
+      tabindex="1"
+      @keydown.down="focusArrowDown"
+      @keydown.up="focusArrowUp"
     />
     <div
         v-if="!isSuggestionPicked"
@@ -71,8 +99,8 @@ const focusInput = ({target}: any) => {
 
         :tabindex="suggestions.indexOf(suggestion)+2"
 
-        @click="pickSelectedSuggestion"
-        @keydown.enter="pickSelectedSuggestion"
+        @click="pickFocusedSuggestion"
+        @keydown.enter="pickFocusedSuggestion"
         @keydown.down="focusArrowDown"
         @keydown.up="focusArrowUp"
 
@@ -90,38 +118,30 @@ const focusInput = ({target}: any) => {
 
 
 <style scoped lang="scss">
-.input-container {
-  border-radius: 10px;
-  border: 1px solid black;
+  .input-container {
+    border-radius: 10px;
+    border: 1px solid black;
 
-  background-color: white;
-  width: 300px;
-  transition: 0.3ms ease-in-out;
-
-
-}
-
-.suggestions {
-  &__input {
-    height: 30px;
-    color: black;
+    background-color: white;
     width: 300px;
+    transition: 0.3ms ease-in-out;
   }
-
-  &__result {
-    color: black;
-    z-index: 200;
-    position: relative;
-
-    &:hover {
-      background-color: #ff9970;
+  .suggestions {
+    &__input {
+      height: 30px;
+      color: black;
+      width: 300px;
     }
-
-    &:focus {
-      background-color: $brand;
+    &__result {
+      color: black;
+      z-index: 200;
+      position: relative;
+      &:hover {
+        background-color: #ff9970;
+      }
+      &:focus {
+        background-color: $brand;
+      }
     }
   }
-
-}
-
 </style>
