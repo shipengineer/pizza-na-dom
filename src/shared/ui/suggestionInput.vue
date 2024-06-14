@@ -10,7 +10,7 @@ const props = defineProps({
   func: {
     type: Function,
     required: true,
-  },
+  }
 })
 
 const query = ref('');
