@@ -7,7 +7,7 @@ export const addressSuggestions = async (query: string) => {
             "Accept": "application/json",
             "Authorization": `Token ${useRuntimeConfig().public.apiToken}`
         },
-        body: JSON.stringify({query: query})
+        body: JSON.stringify({query: query })
     })
     if (!suggestionResponse.ok) {
         console.log('Похоже, у нас что-то сломалось, зайдите попозже.')
