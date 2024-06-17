@@ -1,9 +1,12 @@
+// @ts-ignore
+// @ts-ignore
 export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             apiToken: process.env.NUXT_API_TOKEN,
             addressSuggestionUrl: process.env.NUXT_PUBLIC_ADDRESS_SUGGESTION_URL,
             emailSuggestionUrl: process.env.NUXT_PUBLIC_EMAIL_SUGGESTION_URL,
+            pizzeriaLocation: JSON.parse(process.env.NUXT_PUBLIC_PIZZERIA_LOCATON)
         }
     },
     devtools: {enabled: true},

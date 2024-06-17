@@ -1,8 +1,4 @@
 <script setup lang="ts">
-// TODO: допилить автоимпорт 3🦉/ 10🦉
-// TODO: функция подсказки по емайлу для инпута ???🦉/10🦉
-// TODO: красиво показывать подсказки (скорее всего будет отдельно замороченное место) вынести в компонент с пропосом
-//  с объектом подсказки. 8🦉/10🦉
 
 const query = ref('');
 const isSuggestionPicked = ref(false)
@@ -20,7 +16,6 @@ watchDebounced(
     async (query) => {
       if (!isSuggestionPicked.value) { // если подсказка выбрана НЕ делаем запрос к API.
         suggestions.value = (await props.apiCallback(query)).suggestions;
-        console.log(suggestions)
       }
     },
     { debounce: 500}
@@ -77,10 +72,10 @@ const caretToInputEndReplacer = ({target}: any) => {
 // endregion
 </script>
 
-
 <template>
-  <div class="input-container"
+  <section style="position: relative" class="input-container"
      @keydown.esc="clearInput">
+    <div style="position: absolute">
     <input
       @input="setIsSuggestionPickedFalse"
       @focus="caretToInputEndReplacer"
@@ -105,15 +100,10 @@ const caretToInputEndReplacer = ({target}: any) => {
         @keydown.up="focusArrowUp"
 
         class="suggestions__result">
-      <span v-if="apiCallback.name === 'addressSuggestions'">
-              {{ suggestion.data.region }} {{ suggestion.data.city }} {{ suggestion.data.street_with_type }}
-            {{ suggestion.data.house }} {{ suggestion.data.flat }}
-      </span>
-      <span v-else>
-              {{ suggestion.value }}
-      </span>
+      {{ suggestion.value }}
     </div>
   </div>
+</section>
 </template>
 
 
@@ -122,9 +112,9 @@ const caretToInputEndReplacer = ({target}: any) => {
     border-radius: 10px;
     border: 1px solid black;
 
-    background-color: white;
     width: 300px;
     transition: 0.3ms ease-in-out;
+    height: 30px;
   }
   .suggestions {
     &__input {
@@ -133,6 +123,7 @@ const caretToInputEndReplacer = ({target}: any) => {
       width: 300px;
     }
     &__result {
+      background-color: white;
       color: black;
       z-index: 200;
       position: relative;

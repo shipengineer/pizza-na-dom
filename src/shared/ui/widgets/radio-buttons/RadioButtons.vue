@@ -9,17 +9,21 @@ defineProps({
       default:[],
       required: true
     },
+    inCollomn: {
+      type: Boolean,
+      default: false
+    }
 })
 
 defineModel();
 </script>
 
 <template>
-  <div class="radio-container">
+  <div class="radio-container" :class="{inCollomn: inCollomn}">
     <UiBaseButton
         v-for="checkbox in checkboxes"
         :key="checkbox.value"
-        :class="{ active: checkbox.value==modelValue}"
+        :class="{ active: checkbox.value == modelValue}"
         @click="$emit('update:modelValue', checkbox.value)">
       {{ checkbox.title }}
     </UiBaseButton>
@@ -33,6 +37,9 @@ defineModel();
     gap: 10px
   }
 
+  .inCollomn {
+    flex-direction: column;
+  }
   .active {
     background-color: green;
   }
