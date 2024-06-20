@@ -12,8 +12,6 @@ export const addressSuggestions = async (query: string) => {
         },
         body: JSON.stringify({
             query: query,
-            from_bound: {"value": "city"},
-            to_bound: {"value": "flat"},
             locations_geo: [{
                 lat: useRuntimeConfig().public.pizzeriaLocation.lat,
                 lon: useRuntimeConfig().public.pizzeriaLocation.lon,

@@ -5,7 +5,7 @@
 
 defineProps({
     checkboxes: {
-      type:Array<Checkbox>,
+      type:Array<ICheckbox>,
       default:[],
       required: true
     },

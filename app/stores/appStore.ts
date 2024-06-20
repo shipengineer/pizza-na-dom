@@ -1,5 +1,3 @@
-import {defineStore} from "pinia";
-
 export const useAppStore = defineStore('appStore', () => {
     const themeColor = ref('light');
     function changeTheme() {

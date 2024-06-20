@@ -3,34 +3,22 @@
 <template>
   <div>
     Это главная страница
-    <UiSuggestionInput :api-callback="addressSuggestions"></UiSuggestionInput>
-    <UiSuggestionInput :api-callback="emailSuggestions"></UiSuggestionInput>
-    <UiWidgetsRadioButtons :in-collomn=true :checkboxes=sizes></UiWidgetsRadioButtons>
+<!--    <UiSuggestionInput :routes-callback="addressSuggestions"></UiSuggestionInput>-->
+<!--    <UiSuggestionInput :routes-callback="emailSuggestions"></UiSuggestionInput>-->
+<!--    <UiWidgetsRadioButtons :in-collomn=true :checkboxes=sizes></UiWidgetsRadioButtons>-->
+  <UiCardsRenderer :pizza-cards="pizzaCards"/>
   </div>
 </template>
 
 <script setup lang="ts">
-import {addressSuggestions} from "~/app/api/addressSuggestions";
-import {emailSuggestions} from "~/app/api/emailSuggestions";
-
-const sizes: ICheckbox[] = [
-  {
-    title: "25",
-    value: 25
-  },
-  {
-    title: "35",
-    value: 35
-  },
-  {
-    title: "45",
-    value: 45
-  }
-
-]
+import {usePizzaStore} from "~/app/stores/pizzaStore";
+const pizzaCards = usePizzaStore().pizzaCards;
 
 </script>
 
 <style scoped>
-
+  * {
+    display: flex;
+    gap: 30px;
+  }
 </style>

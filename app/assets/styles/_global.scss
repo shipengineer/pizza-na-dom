@@ -1,10 +1,22 @@
 * {
-  color: $brand;
+  color: black;
 }
 * {
   font-family: 'Rubik', sans-serif;
   font-optical-sizing: auto;
   font-weight: 500;
   font-style: normal;
-  color: $dark-brand;
+}
+
+.button_sizepicker-form {
+  border-radius: 20px;
+  border: none;
+  width: 180px;
+  height: 35px;
+}
+
+.button_sizepicker-color {
+  color: #ffffff;
+  background-color: #ff4800;
+  font-weight: 700;
 }
