@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div>Сдесь будет корзина</div>
+  <div>Здесь будет корзина</div>
 </template>
 
 <style scoped>
