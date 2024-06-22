@@ -9,7 +9,7 @@
 
 <template>
   <div v-for="pizza in pizzaCards">
-    <UiCard :pizza="pizza"/>
+
   </div>
 </template>
 

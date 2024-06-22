@@ -13,7 +13,7 @@ defineProps({
 </script>
 
 <template>
-  <button :class="`button_${form} button_${color}`">
+  <button :class="`button__${form} button__${color}`">
     <slot/>
   </button>
 </template>

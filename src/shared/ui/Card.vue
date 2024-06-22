@@ -17,20 +17,25 @@
       <div class="description__name">{{ pizza.name }}</div>
       <div class="description__text">{{ pizza.description }}</div>
       </div>
-
     <div class="price">
       <span v-if="pizza.prices.length > 1">от </span>
       <span>{{ pizza.prices[0] }} ₽</span>
     </div>
-    <UiBaseButton
-        form="sizepicker-form"
-        color="sizepicker-color">
-      Выбрать размер</UiBaseButton>
+    <NuxtLink
+        :to="{ name: 'id', params: {id: 'id-' + pizza.id + 'размер-20' + 'количество-2' + 'топинги-моцарело'} }">
+      <UiBaseButton
+          form="sizepicker-form"
+          color="sizepicker-color">
+        Выбрать размер
+      </UiBaseButton>
+    </NuxtLink>
   </div>
 </template>
 
 <style lang="scss" scoped>
   .card {
+    background-color: white;
+    border-radius: 5px;
     height: 600px;
     width: 260px;
     display: flex;
@@ -67,3 +72,4 @@
     font-size: 1.2rem;
   }
 </style>
+
