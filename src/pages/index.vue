@@ -12,5 +12,7 @@ const pizzaCards = usePizzaStore().pizzaCards;
 </script>
 
 <style scoped>
-
+  * {
+    margin: 0 auto;
+  }
 </style>

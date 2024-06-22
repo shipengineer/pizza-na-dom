@@ -34,9 +34,9 @@
 
 <style lang="scss" scoped>
   .card {
-    background-color: white;
+    background: white;
     border-radius: 5px;
-    height: 600px;
+    height: 500px;
     width: 260px;
     display: flex;
     flex-direction: column;
@@ -52,6 +52,7 @@
     font-size: 1.5rem;
   }
   .description {
+    margin-top: 12px;
     height: 200px;
     padding: 0 40px 0 40px;
     display: flex;

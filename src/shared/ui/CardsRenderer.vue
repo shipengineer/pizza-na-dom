@@ -8,11 +8,19 @@
 </script>
 
 <template>
-  <div v-for="pizza in pizzaCards">
-
+  <div class="pizzas">
+    <UiCard v-for="pizza in pizzaCards" :pizza="pizza"/>
   </div>
 </template>
 
 <style scoped>
-
+ .pizzas {
+   width: 840px;
+   background-color: lightgrey;
+   display: grid;
+   justify-items: center;
+   grid-template-columns: repeat(3, 1fr);
+   grid-column-gap: 30px;
+   grid-row-gap: 20px;
+ }
 </style>

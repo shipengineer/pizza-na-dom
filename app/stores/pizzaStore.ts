@@ -7,13 +7,11 @@ export const usePizzaStore = defineStore('pizzaStore', () => {
             image: "https://static.tildacdn.com/stor3137-3066-4533-b638-666639636363/11848312.jpg",
             sizes: [
                 {
-                    title: "Small", value: 25},
-                {
-                    title: "Medium", value: 30},
-                {
-                    title: "Large", value: 35}
+                    title: "Small",
+                    value: 25,
+                }
             ],
-            prices: [485, 715, 895],
+            prices: [485],
             toppings: ["Basil"]
         },
         {
