@@ -1,25 +1,18 @@
 <template>
-    <div>
-Это главная страница
-<UiButton :theme="theme" :click-handler="changeTheme">
-   <UiIconsCart color="#d3d3d3"/> Нажми меня
-</UiButton>
-    </div>
+  <div>
+    Это главная страница
+  <UiCardsRenderer :pizza-cards="pizzaCards"/>
+  </div>
 </template>
 
 <script setup lang="ts">
-const theme=ref('light')
+import {usePizzaStore} from "~/app/stores/pizzaStore";
+const pizzaCards = usePizzaStore().pizzaCards;
 
-const changeTheme=function(){
-    
-    if(theme.value==='black'){
-        theme.value='light'
-    }else{
-        theme.value='black'
-    }
-}
 </script>
 
 <style scoped>
-
+  * {
+    margin: 0 auto;
+  }
 </style>
