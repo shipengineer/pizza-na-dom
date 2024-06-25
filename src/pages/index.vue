@@ -1,35 +1,18 @@
 <template>
-    <div>
-        <RadioButtons :buttons="sizes" v-model="result" theme="" class="radio"/>
-        <p style="color: red;">{{ result }}</p>
-    </div>
+  <div>
+    Это главная страница
+  <UiCardsRenderer :pizza-cards="pizzaCards"/>
+  </div>
 </template>
 
 <script setup lang="ts">
-const result=ref(10)
-import RadioButtons from '../widgets/radio-buttons/RadioButtons.vue';
-const sizes=[
-    {name:'Оплата картой',
-        value:'CARD'
-    },
-    {name:'Оплата наличкой',
-        value:"CASH"
-    },
-    {name:'35',
-        value:35
-    },
-    {name:'40',
-        value:40
-    }
-]
+import {usePizzaStore} from "~/app/stores/pizzaStore";
+const pizzaCards = usePizzaStore().pizzaCards;
 
-
-  
 </script>
 
 <style scoped>
-.radio{
-    display: flex;
-    flex-direction: column;
-}
+  * {
+    margin: 0 auto;
+  }
 </style>
